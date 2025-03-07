@@ -1,0 +1,105 @@
+/* estilos gerais */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%; 
+}
+
+/* Geral da plataforma (Aplicável a Todos os Tamanhos de Tela) */
+.container {
+  width: 100%; /* Largura total */
+  max-width: none; /* Remove a largura máxima */
+  padding-left: 0; /* Remove o preenchimento padrão à esquerda */
+  padding-right: 0; /* Remove o preenchimento padrão à direita */
+  margin-left: 0; /* Removendo margens automáticas nas laterais */
+  margin-right: 0;
+}
+
+.row {
+  margin-left: 0; /* Remover a margem negativa padrão da linha */
+  margin-right: 0;
+}
+
+/* Estilos de texto gerais */
+.titulo {
+  font-weight: bold; /* Texto em negrito */
+  text-align: center; /* Alinha o texto ao centro (padrão para telas menores) */
+  font-size: 1.5em; /* Ajusta o tamanho da fonte para melhor legibilidade */
+}
+
+.sub-titulo {
+  color: gray; /* Cor do texto */
+  text-align: center; /* Alinha o texto ao centro (padrão para telas menores) */
+}
+
+/* Estilos do formulário */
+.input-form {
+  margin-top: 10px; /* Espaçamento acima do campo */
+  margin-bottom: 10px; /* Espaçamento abaixo do campo */
+  width: 100%; /* Largura total */
+  padding: 10px; /* Espaçamento interno */
+  outline: 0; /* Remove a borda de foco padrão */
+  box-sizing: border-box; /* Inclui preenchimento e borda na largura e altura */
+  border: 1px solid #ccc; /* Borda cinza clara */
+  border-radius: 5px; /* Cantos arredondados */
+}
+
+.input-form:focus {
+  border: 2px solid #27db8f !important; /* Borda verde ao receber foco */
+  outline: 0 !important; /* Remove o foco padrão */
+  box-shadow: none !important; /* Remove a sombra ao receber foco */
+}
+
+.bold {
+  font-weight: bold; /* Texto em negrito */
+  display: block; /* Exibe as etiquetas acima das entradas */
+  margin-bottom: 5px; /* Espaçamento abaixo da etiqueta */
+}
+
+/* Botões */
+.btn-first {
+  border: none; /* Remove a borda */
+  padding: 10px 20px; /* Ajusta o preenchimento */
+  font-size: 1.2em; /* Tamanho da fonte */
+  background-color: #27db8f; /* Cor de fundo principal */
+  color: white; /* Cor do texto */
+  font-weight: bold; /* Texto em negrito */
+  width: 100%; /* Largura total */
+  border-radius: 5px; /* Cantos arredondados */
+  cursor: pointer; /* Altera o cursor ao passar o mouse */
+}
+
+.btn-first:hover {
+  background-color: #22b377; /* Cor ligeiramente mais escura ao passar o mouse */
+}
+
+/* Layout e sidebar */
+.sidebar {
+  /* Ajustamentos para dispositivos móveis */
+  background-color: #27db8f; /* Cor de fundo */
+  text-align: center; /* Alinha o logo ao centro em dispositivos móveis */
+  background-image: url("/static/img/fundo_background.png"); /* Imagem de fundo */
+  background-size: cover; /* Redimensiona a imagem para cobrir todo o container */
+  background-position: center; /* Centraliza a imagem de fundo */
+  background-repeat: no-repeat; /* Impede que a imagem se repita */
+}
+
+.logo_sidebar {
+  text-align: center; /* Manter o logo centralizado */
+  padding: 10px; /* Adicionar algum preenchimento */
+}
+
+.img_logo_sidebar {
+  max-width: 80%; /* Certificar-se de que cabe na tela menor */
+  height: auto; /* Manter a proporção da imagem */
+}
+
+.area_cadastrar {
+  margin: 20px auto; /* Centraliza horizontalmente e adiciona margem superior/inferior */
+  padding: 20px; /* Adiciona preenchimento interno */
+  width: 90%; /* Ocupa mais largura em telas pequenas */
+  max-width: 500px; /* Limita a largura em telas maiores */
+}
+/* estilos gerais FIM*/
+

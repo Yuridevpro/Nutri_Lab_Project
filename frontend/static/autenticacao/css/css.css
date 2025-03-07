@@ -1,7 +1,6 @@
-/* Seria bom avaliarmos após algumas telas a paleta de cores? Podemos dar uma pesquisada sobre o que se usa em geral*/
 
 /* estilos gerais */
-body,
+body, 
 html {
   margin: 0;
   padding: 0;
@@ -105,3 +104,49 @@ html {
 }
 /* estilos gerais FIM*/
 
+/* Media Queries Consolidadas */
+@media (min-width: 768px) {
+  /* Telas maiores (tablets e desktops) */
+  .area_cadastrar {
+    margin-top: 8%; /* Adiciona margem superior */
+    margin-left: 15%; /* Adiciona margem à esquerda */
+    width: 70%; /* Define a largura */
+  }
+
+  .titulo {
+    text-align: left; /* Alinha o título à esquerda */
+    font-size: 2em; /* Aumenta o tamanho da fonte */
+  }
+
+  .sub-titulo {
+    text-align: left; /* Alinha o subtítulo à esquerda */
+  }
+
+  .col-md {
+    flex: 0 0 48%; /* Ajusta a largura da coluna */
+    max-width: 48%;
+  }
+
+  .btn-first {
+      width: auto;
+  }
+
+  /* Ajuste da sidebar em telas maiores */
+  .sidebar {
+    height: 100vh; /* Fixa a altura */
+  }
+
+  /* Posiciona o texto "Já possui uma conta" */
+  h3[style*="Já possui uma conta"] {
+    position: absolute !important;
+    bottom: 65px !important;
+    text-align: left;
+  }
+
+  /* Ajusta o layout da linha em telas maiores */
+  .row {
+    display: flex; /* Ativa o flexbox */
+    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+    justify-content: space-between; /* Espaça os itens */
+  }
+}

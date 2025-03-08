@@ -35,3 +35,38 @@ async function criarRefeicao(
   }
 }
 // Fim yuri
+
+// *** Funções de Autenticação - Verificação de Sessão ***
+async function requireAuth() {
+  try {
+    const currentUser = await Parse.User.currentAsync();
+    if (!currentUser) {
+      console.log("Usuário não autenticado. Redirecionando...");
+      window.location.replace("/templates/autenticacao/logar.html");
+    }
+  } catch (error) {
+    console.error("Erro ao verificar autenticação:", error);
+    alert(
+      "Erro ao verificar autenticação. Redirecionando para login. Detalhes: " +
+        error.message
+    );
+    window.location.replace("/templates/autenticacao/logar.html");
+  }
+}
+
+
+
+// Adiciona a função deslogarUsuario
+async function deslogarUsuario() {
+  try {
+    // Desloga o usuário no Back4App (se necessário)
+    await Parse.User.logOut();
+
+    localStorage.removeItem("sessionToken"); // Limpa o token
+    alert("Usuário deslogado com sucesso!");
+    window.location.href = "/index.html"; // Redireciona para a página inicial
+  } catch (error) {
+    console.error("Erro ao deslogar usuário:", error);
+    alert("Erro ao deslogar usuário: " + error.message);
+  }
+}

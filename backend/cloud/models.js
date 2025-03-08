@@ -49,3 +49,64 @@ Parse.Object.registerSubclass(
     },
 );
 // Fim Alan
+
+// Yuri
+// Classe Refeicao
+Parse.Object.registerSubclass(
+    "Refeicao",
+    class Refeicao extends Parse.Object {
+        constructor() {
+            super("Refeicao");
+        }
+        getPaciente() {
+            return this.get("paciente");
+        }
+        setPaciente(paciente) {
+            this.set("paciente", paciente);
+        }
+
+        getTitulo() {
+            return this.get("titulo");
+        }
+        setTitulo(titulo) {
+            this.set("titulo", titulo);
+        }
+
+        // New Getters and Setters for Descricao
+        getDescricao() {
+            return this.get("descricao");
+        }
+        setDescricao(descricao) {
+            this.set("descricao", descricao);
+        }
+
+        getHorario() {
+            return this.get("horario");
+        }
+        setHorario(horario) {
+            this.set("horario", horario);
+        }
+
+        getCarboidratos() {
+            return this.get("carboidratos");
+        }
+        setCarboidratos(carboidratos) {
+            this.set("carboidratos", carboidratos);
+        }
+
+        getProteinas() {
+            return this.get("proteinas");
+        }
+        setProteinas(proteinas) {
+            this.set("proteinas", proteinas);
+        }
+
+        getGorduras() {
+            return this.get("gorduras");
+        }
+        setGorduras(gorduras) {
+            this.set("gorduras", gorduras);
+        }
+    }
+);
+// Fim Yuri

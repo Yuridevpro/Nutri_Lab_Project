@@ -14,4 +14,5 @@ Parse.Cloud.define("setCorsHeaders", (request) => {
 
 // *** Importando funções do Cloud Code ***
 require("./autenticacao");
+require("./refeicao");
 

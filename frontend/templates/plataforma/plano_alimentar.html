@@ -1,0 +1,553 @@
+<!-- Yuri -->
+<!-- frontend/templates/plataforma/plano_alimentar.hml -->
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plano Alimentar</title>
+    <link rel="stylesheet" href="/static/plataforma/css/css.css" />
+    <link rel="stylesheet" href="/static/plataforma/css/plano_alimentar.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script src="/script.js"></script>
+
+
+    <style>
+        .navbar-nav-sidebar {
+            display: none;
+            /* Hidden by default */
+        }
+
+        .navbar-nav-sidebar .nav-item {
+            margin-right: 0;
+        }
+
+        .navbar-nav-sidebar .nav-link {
+            padding-left: 1rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .navbar-nav-sidebar {
+                display: flex;
+                /* Show on small screens */
+                flex-direction: column;
+            }
+
+            #sidebar {
+                display: none;
+            }
+        }
+
+        /* Adjust the size of the sidebar images on smaller screens */
+        @media (max-width: 767.98px) {
+            .navbar-nav-sidebar .nav-link img {
+                max-width: 30px;
+                /* Adjust the pixel value as needed */
+                height: auto;
+            }
+        }
+
+         /* Style to hide the element without using display:none */
+        .hidden-for-render {
+            position: absolute;
+            top: -9999px;
+            left: -9999px;
+            /* Other properties to ensure it's not visible and doesn't take up space */
+            width: 0;
+            height: 0;
+            overflow: hidden;
+       }
+    </style>
+</head>
+
+<body>
+    <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
+        <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" id="menu-autenticacao">
+                <script>atualizarMenuAutenticacao();</script>
+            </ul>
+
+            <!-- Sidebar links for mobile -->
+            <ul class="navbar-nav navbar-nav-sidebar">
+                <li class="nav-item">
+                    <a class="nav-link active" href="pacientes.html">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <span>Gerenciar Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="dados_paciente_listar.html">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <span>Dados do Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="plano_alimentar_listar.html">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <span>Plano alimentar</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="col-md-2">
+                <a href="pacientes.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <br />
+                        <br />
+                        <h3>Gerenciar Pacientes</h3>
+                    </div>
+                </a>
+
+                <a href="dados_paciente_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <br />
+                        <br />
+                        <h3>Dados do Pacientes</h3>
+                    </div>
+                </a>
+
+                <a href="plano_alimentar_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <br />
+                        <br />
+                        <h3>Plano alimentar</h3>
+                    </div>
+                </a>
+            </nav>
+
+
+
+            <!-- Conteúdo principal -->
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Plano Alimentar</h1>
+                </div>
+
+                <!-- Container para dados do paciente -->
+                <div id="dadosPacienteContainer" class="mb-4">
+                    <!-- Dados do paciente serão carregados aqui -->
+                </div>
+
+                <!-- Ações -->
+                <div class="d-flex justify-content-between mb-3">
+                    <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                        data-target="#modalNovaRefeicao">
+                        + Nova refeição
+                    </button>
+                </div>
+
+                <!-- Container para listagem das refeições -->
+                <div id="listaRefeicoes" class="row">
+                    <!-- As refeições serão carregadas aqui pelo JavaScript -->
+                </div>
+
+                <!-- Modals -->
+                <!-- Modal para Adicionar Nova Refeição -->
+                <div class="modal fade" id="modalNovaRefeicao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalNovaRefeicaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalNovaRefeicaoLabel">
+                                    Adicionar refeição
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formNovaRefeicao">
+                                    <div class="form-group">
+                                        <label for="titulo">Título</label>
+                                        <input type="text" class="form-control" id="titulo"
+                                            placeholder="Ex: Café da manhã" required
+                                            title="Insira o nome da refeição (ex: Café da Manhã)" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="descricao">Descrição</label>
+                                        <textarea class="form-control" id="descricao" rows="3"
+                                            placeholder="Ex: 200g de arroz branco, 100g de feijão, 1 filé de frango grelhado (150g), salada de folhas verdes à vontade."
+                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades."></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="horario">Horário</label>
+                                        <input type="time" class="form-control" id="horario" required
+                                            title="Insira o horário da refeição" />
+                                    </div>
+                                    <h5 class="mt-3">Macronutrientes</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="carboidratos">Carboidratos</label>
+                                                <input type="number" class="form-control" id="carboidratos"
+                                                    placeholder="" title="Insira a quantidade de carboidratos" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="proteinas">Proteínas</label>
+                                                <input type="number" class="form-control" id="proteinas"
+                                                    placeholder="" title="Insira a quantidade de proteínas" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="gorduras">Gorduras</label>
+                                                <input type="number" class="form-control" id="gorduras"
+                                                    placeholder="" title="Insira a quantidade de gorduras" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para Editar Refeição -->
+                <div class="modal fade" id="modalEditarRefeicao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalEditarRefeicaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalEditarRefeicaoLabel">
+                                    Editar Refeição
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formEditarRefeicao">
+                                    <input type="hidden" id="editarRefeicaoId">
+                                    <div class="form-group">
+                                        <label for="editarTitulo">Título</label>
+                                        <input type="text" class="form-control" id="editarTitulo"
+                                            placeholder="Ex: Café da manhã" required
+                                            title="Insira o nome da refeição (ex: Café da Manhã)" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="editarDescricao">Descrição</label>
+                                        <textarea class="form-control" id="editarDescricao" rows="3"
+                                            placeholder="Ex: 200g de arroz branco, 100g de feijão, 1 filé de frango grelhado (150g), salada de folhas verdes à vontade."
+                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades."></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="editarHorario">Horário</label>
+                                        <input type="time" class="form-control" id="editarHorario" required
+                                            title="Insira o horário da refeição" />
+                                    </div>
+                                    <h5 class="mt-3">Macronutrientes</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="editarCarboidratos">Carboidratos</label>
+                                                <input type="number" class="form-control" id="editarCarboidratos"
+                                                    placeholder="" title="Insira a quantidade de carboidratos" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="editarProteinas">Proteínas</label>
+                                                <input type="number" class="form-control" id="editarProteinas"
+                                                    placeholder="" title="Insira a quantidade de proteínas" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="editarGorduras">Gorduras</label>
+                                                <input type="number" class="form-control" id="editarGorduras"
+                                                    placeholder="" title="Insira a quantidade de gorduras" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Salvar Alterações</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Confirmação de Exclusão -->
+                <div class="modal fade" id="modalExcluirRefeicao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalExcluirRefeicaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalExcluirRefeicaoLabel">Confirmar Exclusão</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja excluir esta refeição?
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmarExclusao">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script>
+        requireAuth();
+        // Função para obter o ID do paciente da URL (ex.: plano_alimentar.html?id=ALGUM_ID)
+        function obterIdPacienteDaURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get("id");
+        }
+        const idPaciente = obterIdPacienteDaURL();
+
+        // Busca e exibe os dados do paciente
+        async function buscarDadosPaciente(idPaciente) {
+            try {
+                const Pacientes = Parse.Object.extend("Pacientes");
+                const query = new Parse.Query(Pacientes);
+                const paciente = await query.get(idPaciente);
+
+                document.getElementById("dadosPacienteContainer").innerHTML = `
+                <div class="d-flex align-items-center border rounded p-3 mb-3">
+                    <img src="/static/img/perfil1.png" alt="Perfil" class="rounded-circle mr-3" style="width: 80px; height: 80px;">
+                    <div>
+                        <h4>${paciente.get("nome")}</h4>
+                        <p class="text-muted">Idade: ${paciente.get("idade")}</p>
+                    </div>
+                </div>
+                `;
+            } catch (error) {
+                console.error("Erro ao buscar dados do paciente:", error);
+                window.location.href = "#";
+            }
+        }
+        buscarDadosPaciente(idPaciente);
+    </script>
+
+    <!-- Script para listar refeições e tratar o envio do formulário de nova refeição -->
+    <script>
+
+        let refeicaoIdParaExcluir; // Variável global para armazenar o ID da refeição a ser excluída
+
+        async function listarRefeicoes() {
+            if (!idPaciente) {
+                console.error("ID do paciente não definido!");
+                document.getElementById("listaRefeicoes").innerHTML = "<p>Erro: ID do paciente não definido.</p>";
+                return;
+            }
+            console.log("ID do paciente:", idPaciente);
+
+            const Refeicao = Parse.Object.extend("Refeicao");
+            const query = new Parse.Query(Refeicao);
+
+            // Inclui o pointer do paciente para depuração
+            query.include("paciente");
+
+            // Cria um objeto do tipo Pacientes com o id atual para filtrar as refeições
+            const Paciente = Parse.Object.extend("Pacientes");
+            const paciente = new Paciente();
+            paciente.id = idPaciente;
+
+            query.equalTo("paciente", paciente);
+            query.descending("createdAt"); // Ordena pela data de criação
+
+            try {
+                const results = await query.find();
+                console.log("Resultados da consulta de refeições:", results);
+                const listaContainer = document.getElementById("listaRefeicoes");
+                listaContainer.innerHTML = "";
+
+                if (results.length > 0) {
+                    let html = '';
+                    for (const refeicao of results) {
+
+                        html += `
+                      <div class="col-md-6 mb-4">
+                        <div class="card meal-card h-100">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">${refeicao.get("titulo")}</h5>
+                                <p class="card-text">Descrição: ${refeicao.get("descricao")}</p>
+                                <p class="card-text">Horário: ${refeicao.get("horario")}</p>
+                                <p class="card-text">Carboidratos: ${refeicao.get("carboidratos")}</p>
+                                <p class="card-text">Proteínas: ${refeicao.get("proteinas")}</p>
+                                <p class="card-text">Gorduras: ${refeicao.get("gorduras")}</p>
+                                <div class="mt-auto buttons d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-primary btnEditarRefeicao" data-id="${refeicao.id}"
+                                        data-titulo="${refeicao.get("titulo")}" data-descricao="${refeicao.get("descricao")}" data-horario="${refeicao.get("horario")}"
+                                        data-carboidratos="${refeicao.get("carboidratos")}" data-proteinas="${refeicao.get("proteinas")}"
+                                        data-gorduras="${refeicao.get("gorduras")}" data-toggle="modal"
+                                        data-target="#modalEditarRefeicao">Editar</button>
+                                    <button class="btn btn-sm btn-danger btnExcluirRefeicao" data-id="${refeicao.id}"
+                                        data-toggle="modal" data-target="#modalExcluirRefeicao">Excluir</button>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    `;
+                    }
+                    listaContainer.innerHTML = html;
+                } else {
+                    listaContainer.innerHTML = "<p>Nenhuma refeição encontrada.</p>";
+                }
+            } catch (error) {
+                console.error("Erro ao listar refeições:", error);
+                document.getElementById("listaRefeicoes").innerHTML = "<p>Erro ao carregar refeições.</p>";
+            }
+        }
+
+        listarRefeicoes();
+
+        // Trata o envio do formulário para criar uma nova refeição
+        document.getElementById("formNovaRefeicao").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const titulo = document.getElementById("titulo").value;
+            const descricao = document.getElementById("descricao").value;
+            const horario = document.getElementById("horario").value;
+            const carboidratos = document.getElementById("carboidratos").value;
+            const proteinas = document.getElementById("proteinas").value;
+            const gorduras = document.getElementById("gorduras").value;
+
+            try {
+                const response = await Parse.Cloud.run("criarRefeicao", {
+                    pacienteId: idPaciente,
+                    titulo: titulo,
+                    descricao: descricao,
+                    horario: horario,
+                    carboidratos: carboidratos,
+                    proteinas: proteinas,
+                    gorduras: gorduras
+                });
+                if (response.success) {
+                    alert("Refeição criada com sucesso!");
+                    document.getElementById("formNovaRefeicao").reset();
+                    $('#modalNovaRefeicao').modal('hide');
+                    listarRefeicoes();
+                } else {
+                    alert("Erro ao criar refeição: " + response.message);
+                }
+            } catch (error) {
+                console.error("Erro ao criar refeição:", error);
+                alert("Erro ao criar refeição: " + error.message);
+            }
+        });
+
+        // Lógica para Excluir Refeição
+        $(document).on('click', '.btnExcluirRefeicao', function () {
+        refeicaoIdParaExcluir = $(this).data('id'); // Armazena o ID da refeição a ser excluída
+        });
+
+        $('#confirmarExclusao').on('click', async function () {
+        try {
+            const response = await Parse.Cloud.run("deletarRefeicao", { id: refeicaoIdParaExcluir });
+
+            if (response.success) {
+                alert("Refeição excluída com sucesso!");
+                $('#modalExcluirRefeicao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a exclusão
+            } else {
+                alert("Erro ao excluir refeição: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao excluir refeição:", error);
+            alert("Erro ao excluir refeição: " + error.message);
+        }
+        });
+
+        // Lógica para Editar Refeição
+        $(document).on('click', '.btnEditarRefeicao', function () {
+        const refeicaoId = $(this).data('id');
+        const titulo = $(this).data('titulo');
+        const descricao = $(this).data('descricao');
+        const horario = $(this).data('horario');
+        const carboidratos = $(this).data('carboidratos');
+        const proteinas = $(this).data('proteinas');
+        const gorduras = $(this).data('gorduras');
+
+        // Preenche os campos do modal com os dados da refeição
+        $('#editarRefeicaoId').val(refeicaoId);
+        $('#editarTitulo').val(titulo);
+        $('#editarDescricao').val(descricao);
+        $('#editarHorario').val(horario);
+        $('#editarCarboidratos').val(carboidratos);
+        $('#editarProteinas').val(proteinas);
+        $('#editarGorduras').val(gorduras);
+        });
+
+        // Trata o envio do formulário de edição de refeição
+        document.getElementById("formEditarRefeicao").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const idRefeicao = document.getElementById("editarRefeicaoId").value;
+        const titulo = document.getElementById("editarTitulo").value;
+        const descricao = document.getElementById("editarDescricao").value;
+        const horario = document.getElementById("editarHorario").value;
+        const carboidratos = document.getElementById("editarCarboidratos").value;
+        const proteinas = document.getElementById("editarProteinas").value;
+        const gorduras = document.getElementById("editarGorduras").value;
+
+        try {
+            const response = await Parse.Cloud.run("atualizarRefeicao", {
+                id: idRefeicao,
+                titulo: titulo,
+                descricao: descricao,
+                horario: horario,
+                carboidratos: carboidratos,
+                proteinas: proteinas,
+                gorduras: gorduras
+            });
+            if (response.success) {
+                alert("Refeição atualizada com sucesso!");
+                $('#modalEditarRefeicao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a edição
+            } else {
+                alert("Erro ao atualizar refeição: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar refeição:", error);
+            alert("Erro ao atualizar refeição: " + error.message);
+        }
+        });
+
+        // Call the function after the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', function () {
+        listarRefeicoes(); // Calling listarRefeicoes() here too, if it depends on DOM
+        //exportarPlanoAlimentar(); // You might want to call it on a button click instead.
+        });
+
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
+<!--Fim Yuri -->

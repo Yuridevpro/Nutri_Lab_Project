@@ -1,3 +1,4 @@
+//yuri
 // *** Inicialização do Parse ***
 Parse.serverURL = "https://parseapi.back4app.com/";
 Parse.initialize(
@@ -5,36 +6,6 @@ Parse.initialize(
   "eohDaTIobNJcVdrnRoJHmU9Sgm1i8TtsJ7HdWg1O"
 );
 
-// Yuri
-// *** Funções para Refeicao ***
-
-// Função para criar refeição
-async function criarRefeicao(
-  pacienteId,
-  titulo,
-  horario,
-  carboidratos,
-  proteinas,
-  gorduras
-) {
-
-  try {
-    const result = await Parse.Cloud.run("criarRefeicao", {
-      pacienteId: pacienteId,
-      titulo: titulo,
-      horario: horario,
-      carboidratos: carboidratos,
-      proteinas: proteinas,
-      gorduras: gorduras,
-    });
-    return result;
-  } catch (error) {
-    console.error("Erro ao criar refeição:", error);
-    alert("Erro ao criar refeição: " + error.message);
-    return null;
-  }
-}
-// Fim yuri
 
 // *** Funções de Autenticação - Verificação de Sessão ***
 async function requireAuth() {
@@ -70,3 +41,76 @@ async function deslogarUsuario() {
     alert("Erro ao deslogar usuário: " + error.message);
   }
 }
+// Função para atualizar o menu de autenticação (login/logout)
+async function atualizarMenuAutenticacao() {
+  const menu = document.getElementById("menu-autenticacao");
+  if (!menu) {
+    console.warn("Elemento #menu-autenticacao não encontrado.");
+    return;
+  }
+
+  menu.innerHTML = ""; // Limpa o menu
+
+  if (localStorage.getItem("sessionToken")) {
+    // Usuário está logado
+    const liPerfil = document.createElement("li");
+    liPerfil.className = "nav-item";
+    liPerfil.innerHTML = `
+            <a class="nav-link" href="/templates/plataforma/perfil/perfil.html">Meu Perfil</a>
+        `;
+    menu.appendChild(liPerfil);
+
+    const liSair = document.createElement("li");
+    liSair.className = "nav-item";
+    liSair.innerHTML = `
+            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+        `;
+    menu.appendChild(liSair);
+  } else {
+    // Usuário não está logado
+    const liLogin = document.createElement("li");
+    liLogin.className = "nav-item";
+    liLogin.innerHTML = `
+            <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
+        `;
+    menu.appendChild(liLogin);
+
+    const liCadastro = document.createElement("li");
+    liCadastro.className = "nav-item";
+    liCadastro.innerHTML = `
+            <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
+        `;
+    menu.appendChild(liCadastro);
+  }
+}
+
+
+// *** Funções para Refeicao ***
+
+// Função para criar refeição
+async function criarRefeicao(
+  pacienteId,
+  titulo,
+  horario,
+  carboidratos,
+  proteinas,
+  gorduras
+) {
+
+  try {
+    const result = await Parse.Cloud.run("criarRefeicao", {
+      pacienteId: pacienteId,
+      titulo: titulo,
+      horario: horario,
+      carboidratos: carboidratos,
+      proteinas: proteinas,
+      gorduras: gorduras,
+    });
+    return result;
+  } catch (error) {
+    console.error("Erro ao criar refeição:", error);
+    alert("Erro ao criar refeição: " + error.message);
+    return null;
+  }
+}
+// Fim Yuri

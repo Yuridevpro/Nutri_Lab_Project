@@ -24,3 +24,26 @@ Parse.Cloud.define("cadastrarUsuario", async (request) => {
     );
   }
 });
+
+// alisson
+// Função para fazer login
+Parse.Cloud.define("logarUsuario", async (request) => {
+  const email = request.params.email;
+  const password = request.params.password;
+
+  try {
+    const user = await Parse.User.logIn(email, password);
+    return {
+      success: true,
+      message: "Login realizado com sucesso!",
+      sessionToken: user.getSessionToken(), // Retorna o token de sessão para o frontend
+    };
+  } catch (error) {
+    console.error("Erro ao logar usuário:", error);
+    throw new Parse.Error(
+      Parse.Error.INTERNAL_SERVER_ERROR,
+      "Erro ao logar usuário: " + error.message
+    );
+  }
+});
+// fim alisson

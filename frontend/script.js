@@ -3,9 +3,8 @@
 Parse.serverURL = "https://parseapi.back4app.com/";
 Parse.initialize(
   "GAcpwTn8vWR3IH6vopjoWxeMi9r0HNQpujteULei",
-  "eohDaTIobNJcVdrnRoJHmU9Sgm1i8TtsJ7HdWg1O"
+  "eohDaTIobNJcVdrnRoJHmU9Sgm1i8TtsJ7HdWg1O",
 );
-
 
 // *** Funções de Autenticação - Verificação de Sessão ***
 async function requireAuth() {
@@ -19,13 +18,11 @@ async function requireAuth() {
     console.error("Erro ao verificar autenticação:", error);
     alert(
       "Erro ao verificar autenticação. Redirecionando para login. Detalhes: " +
-        error.message
+        error.message,
     );
     window.location.replace("/templates/autenticacao/logar.html");
   }
 }
-
-
 
 // Adiciona a função deslogarUsuario
 async function deslogarUsuario() {
@@ -84,7 +81,6 @@ async function atualizarMenuAutenticacao() {
   }
 }
 
-
 // *** Funções para Refeicao ***
 
 // Função para criar refeição
@@ -94,9 +90,8 @@ async function criarRefeicao(
   horario,
   carboidratos,
   proteinas,
-  gorduras
+  gorduras,
 ) {
-
   try {
     const result = await Parse.Cloud.run("criarRefeicao", {
       pacienteId: pacienteId,
@@ -114,3 +109,37 @@ async function criarRefeicao(
   }
 }
 // Fim Yuri
+// Alan
+
+// *** Funções para Pacientes ***
+
+// Função para buscar todos os pacientes
+async function buscarPacientes() {
+  try {
+    const results = await Parse.Cloud.run("buscarPacientes");
+    return results;
+  } catch (error) {
+    console.error("Erro ao buscar pacientes:", error);
+    alert("Erro ao buscar pacientes: " + error.message);
+    return []; // Retorna um array vazio em caso de erro
+  }
+}
+
+// Função para criar um paciente
+async function criarPaciente(nome, sexo, idade, email, telefone) {
+  try {
+    const result = await Parse.Cloud.run("salvarPaciente", {
+      nome: nome,
+      sexo: sexo,
+      idade: idade,
+      email: email,
+      telefone: telefone,
+    });
+    return result;
+  } catch (error) {
+    console.error("Erro ao criar paciente:", error);
+    alert("Erro ao criar paciente: " + error.message);
+    return null; // Retorna null em caso de erro
+  }
+}
+// Fim Alan

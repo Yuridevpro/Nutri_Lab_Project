@@ -1,4 +1,4 @@
-run = "node server.js"
+run = "node index.js"
 modules = ["web", "nodejs-20"]
 
 [nix]
